@@ -6,14 +6,13 @@
 
 <div th:replace="fragments :: page-header"></div>
 
-<div class="container body-content">
 
-    <h1 th:text="${#strings.capitalizeWords(title)}"></h1>
+<h1 th:text="${#strings.capitalizeWords(title)}"></h1>
 
-    <form th:action="@{/search/results}">
-        <h2>Search by:</h2>
+<form th:action="@{/search/results}">
+    <h2>Search by:</h2>
 
-        <p>
+    <p>
             <span th:each="column : ${columns}">
                 <input
                         type="radio"
@@ -24,21 +23,30 @@
                 <label th:for="${column.key}" th:text="${column.value}"></label>
             </span>
 
-        </p>
+    </p>
 
-        <p>
-            <label for="searchTerm">Keyword:</label>
-            <input type="text" name="searchTerm" id="searchTerm" />
-        </p>
+    <p>
+        <label for="searchTerm">Keyword:</label>
+        <input type="text" name="searchTerm" id="searchTerm" />
+    </p>
 
-        <input type="submit" value="Search" />
-    </form>
+    <input type="submit" value="Search" />
+</form>
 
-    <hr />
+<hr />
 
-    <!-- TODO #2 - Loop over jobs map to display all job fields -->
+<!-- TODO #2 - Loop over jobs map to display all job fields -->
+    <div>
+        <h3 th:if="${jobs}" th:text="${jobs.size() + 'Results(s)'}"></h3>
+        <table th:each="job : ${jobs}" class="job-listing">
+            <tr th:each="column : ${job}">
+                <td th:text="${#strings.capitalizeWords(column.key)}"></td>
+                <td th:text="${column.value}"></td>
+            </tr>
+        </table>
+    </div>
 
-</div>
+
 
 </body>
 </html>
