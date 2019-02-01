@@ -28,15 +28,27 @@ public class SearchController {
         //Keep search terms
 
         //if the word selected is all then return everything
-        if (searchType.equals("all")){
-            ArrayList<HashMap<String, String>> jobs = JobData.findByValue(searchTerm);
+        if (searchTerm.isEmpty() && searchType.contentEquals("all")){
+            ArrayList<HashMap<String, String>> jobs = JobData.findAll();
             model.addAttribute("jobs" ,jobs);
             model.addAttribute("columns", ListController.columnChoices);
+            model.addAttribute("title", "All jobs");
+            model.addAttribute("searchType", searchType);
             return "search";
         }
-        else{
+        else if (searchType.contentEquals("all")) {
+            ArrayList<HashMap<String, String>> jobs = JobData.findByValue(searchTerm);
+            model.addAttribute("columns", ListController.columnChoices);
+            model.addAttribute("title", "All jobs with " + searchTerm);
+            model.addAttribute("searchType", searchType);
+            model.addAttribute("jobs", jobs);
+            return "search";
+
+        }
+        else {
             ArrayList<HashMap<String, String>>  jobs = JobData.findByColumnAndValue(searchType, searchTerm);
-            //model.addAttribute("selectedColumn", searchType);
+            model.addAttribute("title", "Showing " + searchType+ " with "+searchTerm);
+            model.addAttribute("selectedColumn", searchType);
             model.addAttribute("jobs" ,jobs);
             model.addAttribute("columns", ListController.columnChoices);
             return "search";
